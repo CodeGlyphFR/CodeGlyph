@@ -58,17 +58,22 @@ Le dashboard peut afficher l'état du serveur (CPU, RAM, disques, services). Ces
 **Installation :**
 
 ```bash
+# Copier les fichiers
 sudo cp scripts/codeglyph-monitor.sh /usr/local/bin/
 sudo chmod +x /usr/local/bin/codeglyph-monitor.sh
+sudo cp scripts/codeglyph-monitor.service /etc/systemd/system/
+sudo cp scripts/codeglyph-monitor.timer /etc/systemd/system/
+
+# Activer et démarrer (exécution toutes les 5 secondes)
+sudo systemctl daemon-reload
+sudo systemctl enable --now codeglyph-monitor.timer
 ```
 
-**Crontab** (exécution toutes les 30 secondes) :
+**Vérification :**
 
 ```bash
-crontab -e
-# Ajouter :
-* * * * * /usr/local/bin/codeglyph-monitor.sh
-* * * * * sleep 30 && /usr/local/bin/codeglyph-monitor.sh
+systemctl status codeglyph-monitor.timer
+systemctl list-timers | grep codeglyph
 ```
 
 **Configuration du script :**
@@ -171,17 +176,22 @@ The dashboard can display server status (CPU, RAM, disks, services). These metri
 **Installation:**
 
 ```bash
+# Copy files
 sudo cp scripts/codeglyph-monitor.sh /usr/local/bin/
 sudo chmod +x /usr/local/bin/codeglyph-monitor.sh
+sudo cp scripts/codeglyph-monitor.service /etc/systemd/system/
+sudo cp scripts/codeglyph-monitor.timer /etc/systemd/system/
+
+# Enable and start (runs every 5 seconds)
+sudo systemctl daemon-reload
+sudo systemctl enable --now codeglyph-monitor.timer
 ```
 
-**Crontab** (runs every 30 seconds):
+**Verification:**
 
 ```bash
-crontab -e
-# Add:
-* * * * * /usr/local/bin/codeglyph-monitor.sh
-* * * * * sleep 30 && /usr/local/bin/codeglyph-monitor.sh
+systemctl status codeglyph-monitor.timer
+systemctl list-timers | grep codeglyph
 ```
 
 **Script configuration:**

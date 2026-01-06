@@ -5,10 +5,14 @@
 # Installation:
 #   sudo cp scripts/codeglyph-monitor.sh /usr/local/bin/
 #   sudo chmod +x /usr/local/bin/codeglyph-monitor.sh
+#   sudo cp scripts/codeglyph-monitor.service /etc/systemd/system/
+#   sudo cp scripts/codeglyph-monitor.timer /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now codeglyph-monitor.timer
 #
-# Crontab (toutes les 30 secondes):
-#   * * * * * /usr/local/bin/codeglyph-monitor.sh
-#   * * * * * sleep 30 && /usr/local/bin/codeglyph-monitor.sh
+# Verification:
+#   systemctl status codeglyph-monitor.timer
+#   systemctl list-timers | grep codeglyph
 
 OUTPUT_FILE="/home/erickdesmet/Docker_apps/codeglyph/data/system-status.json"
 
