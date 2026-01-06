@@ -7,12 +7,15 @@ CodeGlyph Backend API
 """
 
 import os
+import time
+import threading
+from cachetools import TTLCache
 import json
 import subprocess
 import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, Response, stream_with_context
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -58,6 +61,17 @@ LOGIN_MAX_ATTEMPTS = 3
 LOGIN_BLOCK_DURATION = 3600  # 1 hour in seconds
 login_attempts = {}  # {ip: {'count': int, 'blocked_until': datetime}}
 
+# ============================================================================
+# CACHING CONFIGURATION
+# ============================================================================
+# Heatmap cache: TTL 5 minutes, max 100 entries (repos * 2 for with/without since param)
+heatmap_cache = TTLCache(maxsize=100, ttl=300)
+heatmap_cache_lock = threading.Lock()
+
+# Translation cache: TTL 24 hours, max 500 entries
+translation_cache = TTLCache(maxsize=500, ttl=86400)
+translation_cache_lock = threading.Lock()
+
 # Known git repository paths (relative to GIT_REPOS_BASE)
 GIT_REPO_PATHS = [
     'Documents/FitMyCV-DEV',
@@ -78,7 +92,7 @@ def allowed_file(filename):
 
 def translate_text(text, source='fr', target='en'):
     """
-    Translate text using OpenAI GPT-4o-mini.
+    Translate text using OpenAI GPT-4o-mini with caching.
     Returns the translated text, or original text if translation fails.
     """
     if not openai_client or not text or not text.strip():
@@ -86,6 +100,12 @@ def translate_text(text, source='fr', target='en'):
 
     if source == target:
         return text
+
+    # Check cache first
+    cache_key = f"{source}:{target}:{text}"
+    with translation_cache_lock:
+        if cache_key in translation_cache:
+            return translation_cache[cache_key]
 
     lang_names = {'fr': 'French', 'en': 'English'}
 
@@ -105,7 +125,13 @@ def translate_text(text, source='fr', target='en'):
             temperature=0.3,
             max_tokens=200
         )
-        return response.choices[0].message.content.strip()
+        result = response.choices[0].message.content.strip()
+
+        # Store in cache
+        with translation_cache_lock:
+            translation_cache[cache_key] = result
+
+        return result
     except Exception as e:
         print(f"Translation error: {e}")
         return text  # Return original text on error
@@ -487,7 +513,7 @@ def update_repo(repo_id):
 @app.route('/api/git/heatmap/<repo_id>', methods=['GET'])
 def get_heatmap(repo_id):
     """
-    Get commit heatmap data for a repository.
+    Get commit heatmap data for a repository with 5-minute cache.
     Returns commits grouped by date and hour (0-23).
 
     Query params:
@@ -507,6 +533,12 @@ def get_heatmap(repo_id):
         return jsonify({'error': 'Repository not found'}), 404
 
     since_date = request.args.get('since', None)
+
+    # Check cache first (thread-safe)
+    cache_key = f"{repo_id}:{since_date or 'all'}"
+    with heatmap_cache_lock:
+        if cache_key in heatmap_cache:
+            return jsonify(heatmap_cache[cache_key])
 
     try:
         # Build git log command
@@ -604,7 +636,8 @@ def get_heatmap(repo_id):
         # Average commits per active day
         avg_commits = round(total_commits / unique_days, 1) if unique_days > 0 else 0
 
-        return jsonify({
+        # Build result
+        result = {
             'repo': repo_path,
             'repoName': full_path.name,
             'sinceDate': since_date,
@@ -617,7 +650,13 @@ def get_heatmap(repo_id):
                 'busiestDay': busiest_day,
                 'avgCommitsPerDay': avg_commits
             }
-        })
+        }
+
+        # Store in cache before returning
+        with heatmap_cache_lock:
+            heatmap_cache[cache_key] = result
+
+        return jsonify(result)
 
     except subprocess.TimeoutExpired:
         return jsonify({'error': 'Request timeout'}), 504
@@ -980,6 +1019,21 @@ def get_system_status():
         return jsonify({'error': 'Format de donnees invalide'}), 500
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+def read_system_status():
+    """Read current system status from file (helper for SSE)."""
+    try:
+        if SYSTEM_STATUS_FILE.exists():
+            with open(SYSTEM_STATUS_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except (json.JSONDecodeError, IOError):
+        pass
+    return None
+
+
+# SSE endpoint removed - Flask/gevent SSE causes high CPU usage
+# Using optimized polling instead (30s interval in frontend)
 
 # ============================================================================
 # HEALTH CHECK

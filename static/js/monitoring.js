@@ -1,6 +1,9 @@
 // System monitoring (CPU, RAM, disk, services)
 
-import { API_BASE, MONITOR_REFRESH_INTERVAL, FIXED_SERVICES_COUNT } from './config.js';
+import { API_BASE, FIXED_SERVICES_COUNT } from './config.js';
+import { isAdmin } from './admin.js';
+
+const MONITOR_REFRESH_INTERVAL = 5000; // 5 seconds
 
 export async function loadSystemStatus() {
     try {
@@ -127,10 +130,16 @@ export function renderServiceMatrix(services) {
         label.innerHTML = `Docker (<span class="count-docker">${dockerCount}</span>) / Services (<span class="count-service">${servicesCount}</span>)`;
     }
 
-    container.innerHTML = services.map((isRunning, index) => {
+    container.innerHTML = services.map((service, index) => {
+        // Support both formats: object {name, running} or boolean
+        const isObject = typeof service === 'object' && service !== null;
+        const isRunning = isObject ? service.running : service;
+        const name = isObject ? service.name : '';
+
         const type = index < FIXED_SERVICES_COUNT ? 'is-service' : 'is-docker';
         const status = isRunning ? 'running' : 'stopped';
-        return `<div class="service-dot ${type} ${status}"></div>`;
+        const tooltip = isAdmin && name ? ` title="${name}"` : '';
+        return `<div class="service-dot ${type} ${status}"${tooltip}></div>`;
     }).join('');
 
     // Calculer et appliquer la disposition optimale au prochain frame
@@ -161,5 +170,6 @@ export function updateMonitorTimestamp(timestamp) {
 
 export function startMonitoring() {
     loadSystemStatus();
+    // Polling every 30 seconds instead of 5 (6x less requests)
     setInterval(loadSystemStatus, MONITOR_REFRESH_INTERVAL);
 }
