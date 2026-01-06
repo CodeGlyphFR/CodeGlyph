@@ -493,8 +493,14 @@ def get_heatmap(repo_id):
     Query params:
     - since: Start date in YYYY-MM-DD format (optional, defaults to first commit)
     """
-    # Find the repo path from id
-    repo_path = repo_id.replace('_', '/')
+    # Find the repo path from stored repos data
+    data = load_repos()
+    repo = next((r for r in data.get('repos', []) if r['id'] == repo_id), None)
+
+    if not repo:
+        return jsonify({'error': 'Repository not found'}), 404
+
+    repo_path = repo['path']
     full_path = Path(GIT_REPOS_BASE) / repo_path
 
     if not (full_path / '.git').exists():
