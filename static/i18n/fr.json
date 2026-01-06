@@ -1,0 +1,135 @@
+{
+  "header": {
+    "themeLight": "Clair",
+    "themeDark": "Sombre",
+    "themeAuto": "Auto",
+    "adminMode": "Mode admin",
+    "adminLogout": "Deconnexion admin"
+  },
+  "sections": {
+    "builder": "Mon Côté Builder",
+    "ops": "Mon Côté Ops",
+    "entrepreneur": "Mon Côté Entrepreneur",
+    "selfHosted": "Mon Côté Self-Hosted"
+  },
+  "heatmap": {
+    "loading": "Chargement...",
+    "manageRepos": "Gerer les depots",
+    "viewDay": "Jour",
+    "viewDayTitle": "Vue par jour (admin)",
+    "viewWeek": "Semaine",
+    "viewWeekTitle": "Vue par semaine",
+    "less": "Moins",
+    "more": "Plus"
+  },
+  "stats": {
+    "totalCommits": "Total Commits",
+    "activeDays": "Jours Actifs",
+    "peakHour": "Heure de Pointe",
+    "currentStreak": "Serie Actuelle",
+    "favoriteDay": "Jour Prefere",
+    "avgPerDay": "Moy./Jour"
+  },
+  "monitoring": {
+    "cpu": "CPU",
+    "ram": "RAM",
+    "storage": "Stockage",
+    "services": "Services",
+    "updated": "Maj:",
+    "dockerServices": "Docker ({docker}) / Services ({services})"
+  },
+  "modals": {
+    "addService": "Ajouter un service",
+    "editService": "Modifier le service",
+    "addSaas": "Ajouter un SaaS",
+    "editSaas": "Modifier le SaaS",
+    "adminLogin": "Connexion Admin",
+    "repoManagement": "Gestion des depots Git"
+  },
+  "forms": {
+    "title": "Titre",
+    "titleRequired": "Titre *",
+    "titleOptional": "Titre (optionnel)",
+    "description": "Description",
+    "descriptionOptional": "Description (optionnel)",
+    "link": "Lien",
+    "linkRequired": "Lien *",
+    "linkOptional": "Lien (optionnel)",
+    "icon": "Icone",
+    "iconRequired": "Icone *",
+    "publicAccess": "Acces public",
+    "publicAccessHint": "Si desactive, seul l'admin peut acceder a ce service",
+    "username": "Utilisateur",
+    "password": "Mot de passe",
+    "status": "Etat d'avancement",
+    "statusHint": "Les projets non \"Live\" sont affiches en mode teaser"
+  },
+  "placeholders": {
+    "serviceName": "Nom du service",
+    "saasName": "Nom du SaaS",
+    "shortDescription": "Description courte",
+    "url": "https://...",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "repoName": "Nom du depot",
+    "projectUrl": "URL du projet (https://...)",
+    "addDescription": "Ajouter une description..."
+  },
+  "upload": {
+    "dropHint": "Cliquer ou glisser une image",
+    "uploading": "Envoi en cours..."
+  },
+  "buttons": {
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "login": "Connexion",
+    "scan": "Scanner",
+    "edit": "Modifier",
+    "add": "Ajouter"
+  },
+  "status": {
+    "development": "En developpement",
+    "prerelease": "Pre-Release",
+    "live": "Live"
+  },
+  "repos": {
+    "configured": "Depots configures",
+    "discover": "Decouvrir des depots",
+    "scanPrompt": "Cliquez sur Scanner pour rechercher de nouveaux depots.",
+    "scanning": "Scan en cours...",
+    "noNewFound": "Aucun nouveau depot trouve",
+    "noConfigured": "Aucun depot configure",
+    "loadError": "Erreur de chargement",
+    "setDefault": "Definir par defaut",
+    "isDefault": "Depot par defaut",
+    "rename": "Renommer"
+  },
+  "cards": {
+    "addService": "Ajouter un service",
+    "addSaas": "Ajouter un SaaS",
+    "makePrivate": "Rendre prive",
+    "makePublic": "Rendre public"
+  },
+  "errors": {
+    "loginFailed": "Identifiants incorrects",
+    "connectionError": "Erreur de connexion",
+    "uploadError": "Erreur lors de l'upload",
+    "deleteError": "Erreur lors de la suppression",
+    "addError": "Erreur lors de l'ajout",
+    "scanError": "Erreur lors du scan",
+    "attemptsLeft": "({count} essai(s) restant(s))"
+  },
+  "confirmations": {
+    "deleteService": "Supprimer ce service ?",
+    "deleteSaas": "Supprimer ce SaaS ?"
+  },
+  "days": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+  "daysFull": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+  "months": ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Aout", "Sep", "Oct", "Nov", "Dec"],
+  "tooltips": {
+    "commits": "{day} {month}: {count} commit(s)",
+    "commitsAt": "{day} {month} a {hour}h: {count} commit(s)"
+  },
+  "footer": "CodeGlyph Digital Solutions",
+  "footerCredit": "Codé par Erick De Smet"
+}

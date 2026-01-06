@@ -1,0 +1,20 @@
+services:
+  codeglyph:
+    build: .
+    container_name: codeglyph
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4000:4000"
+    volumes:
+      # Parent folder containing all git projects (auto-discovery)
+      - /home/erickdesmet:/repos:ro
+      # Persistent storage for data and icons
+      - ./data:/app/data
+      - ./static/icons:/app/static/icons
+      # Mount static files
+      - ./static:/app/static:ro
+    env_file:
+      - .env
+    environment:
+      - FLASK_ENV=production
+      - GIT_REPOS_BASE=/repos

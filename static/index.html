@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr" class="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="googlebot" content="noindex, nofollow">
+    <title>CodeGlyph - Services</title>
+    <link rel="stylesheet" href="style.css?v=74">
+    <link rel="icon" type="image/png" href="icons/logo_light.png">
+    <script src="js/i18n.js?v=74"></script>
+    <script type="module" src="js/app.js?v=74"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="fr" title="Francais">FR</button>
+                <button class="lang-btn" data-lang="en" title="English">EN</button>
+            </div>
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="light" data-i18n-title="header.themeLight" title="Clair">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+                <button class="theme-btn" data-theme="dark" data-i18n-title="header.themeDark" title="Sombre">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <button class="theme-btn active" data-theme="auto" data-i18n-title="header.themeAuto" title="Auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </button>
+                <button id="admin-toggle" class="admin-btn" data-i18n-title="header.adminMode" title="Mode admin">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </button>
+            </div>
+            <img src="icons/logo_light.png" alt="CodeGlyph" class="logo logo-light">
+            <img src="icons/logo_dark.png" alt="CodeGlyph" class="logo logo-dark">
+        </header>
+
+        <main>
+            <!-- Top row: Side Projects (2/3) + Server (1/3) -->
+            <div class="top-layout">
+                <!-- Git Heatmap Section -->
+                <section class="heatmap-section">
+                <div class="heatmap-header">
+                    <h2 data-i18n="sections.builder">Mon Cote Builder</h2>
+                    <div class="heatmap-controls">
+                        <button id="repo-info-btn" class="info-btn" style="display: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="info-tooltip"></span>
+                        </button>
+                        <button id="repo-settings-btn" class="settings-btn admin-only" data-i18n-title="heatmap.manageRepos" title="Gerer les depots">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
+                        <select id="repo-select" class="repo-select">
+                            <!-- Options chargees dynamiquement -->
+                        </select>
+                        <div class="view-toggle" id="view-toggle" style="display: none;">
+                            <button class="view-btn" data-view="day" data-i18n-title="heatmap.viewDayTitle" title="Vue par jour (admin)">
+                                <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="12" height="12">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <span data-i18n="heatmap.viewDay">Jour</span>
+                            </button>
+                            <button class="view-btn active" data-view="week" data-i18n-title="heatmap.viewWeekTitle" title="Vue par semaine"><span data-i18n="heatmap.viewWeek">Semaine</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div id="heatmap-container" class="heatmap-container" style="display: none;">
+                    <div class="heatmap-layout">
+                        <div class="heatmap-main">
+                            <div class="heatmap-wrapper">
+                                <div class="hours-column" id="hours-column"></div>
+                                <div class="grid-container">
+                                    <div class="months-row" id="months-row"></div>
+                                    <div class="days-row" id="days-row"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="heatmap-legend">
+                            <span data-i18n="heatmap.less">Moins</span>
+                            <div class="legend-cells">
+                                <div class="legend-cell heat-0"></div>
+                                <div class="legend-cell heat-1"></div>
+                                <div class="legend-cell heat-2"></div>
+                                <div class="legend-cell heat-3"></div>
+                                <div class="legend-cell heat-4"></div>
+                            </div>
+                            <span data-i18n="heatmap.more">Plus</span>
+                        </div>
+                        <div class="heatmap-sidebar" id="heatmap-stats">
+                            <!-- Stats cards rendered here -->
+                        </div>
+                    </div>
+                </div>
+                <div id="heatmap-loading" class="heatmap-loading" style="display: none;" data-i18n="heatmap.loading">
+                    Chargement...
+                </div>
+            </section>
+
+                <!-- Server Monitoring Section -->
+                <section class="monitoring-section">
+                    <div class="monitoring-header">
+                        <h2 data-i18n="sections.ops">Mon Cote Ops</h2>
+                        <span class="monitor-updated" id="monitor-updated"></span>
+                    </div>
+                    <div class="monitoring-panel">
+                        <div class="monitoring-grid">
+                            <!-- CPU Card -->
+                            <div class="monitor-card">
+                                <div class="monitor-card-label">CPU</div>
+                                <div class="monitor-card-content">
+                                    <div class="radial-gauge" id="cpu-gauge">
+                                        <svg viewBox="0 0 100 55">
+                                            <path class="gauge-bg" d="M10,50 A40,40 0 0,1 90,50" />
+                                            <path class="gauge-fill" d="M10,50 A40,40 0 0,1 90,50" />
+                                            <line class="gauge-needle" x1="50" y1="50" x2="50" y2="18" />
+                                            <circle class="gauge-center" cx="50" cy="50" r="3" />
+                                        </svg>
+                                        <span class="gauge-value">--%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- RAM Card -->
+                            <div class="monitor-card">
+                                <div class="monitor-card-label">RAM</div>
+                                <div class="monitor-card-content">
+                                    <div class="radial-gauge" id="ram-gauge">
+                                        <svg viewBox="0 0 100 55">
+                                            <path class="gauge-bg" d="M10,50 A40,40 0 0,1 90,50" />
+                                            <path class="gauge-fill" d="M10,50 A40,40 0 0,1 90,50" />
+                                            <line class="gauge-needle" x1="50" y1="50" x2="50" y2="18" />
+                                            <circle class="gauge-center" cx="50" cy="50" r="3" />
+                                        </svg>
+                                        <span class="gauge-value">--%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Disk Bars Card -->
+                            <div class="monitor-card">
+                                <div class="monitor-card-label" data-i18n="monitoring.storage">Stockage</div>
+                                <div class="monitor-card-content">
+                                    <div class="disk-bars" id="disk-bars"></div>
+                                </div>
+                            </div>
+                            <!-- Service Matrix Card -->
+                            <div class="monitor-card">
+                                <div class="monitor-card-label" id="services-label" data-i18n="monitoring.services">Services</div>
+                                <div class="monitor-card-content">
+                                    <div class="service-matrix" id="service-matrix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SaaS Section - Mon Cote Entrepreneur -->
+            <section class="saas-section">
+                <div class="saas-header">
+                    <h2 data-i18n="sections.entrepreneur">Mon Cote Entrepreneur</h2>
+                    <button id="add-saas-btn" class="add-saas-btn admin-only" data-i18n-title="cards.addSaas" title="Ajouter un SaaS">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="saas-grid" id="saas-grid">
+                    <!-- SaaS cards loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Services Section - Full width below -->
+            <section class="services-section">
+                <div class="services-header">
+                    <h2 data-i18n="sections.selfHosted">Mon Cote Self-Hosted</h2>
+                    <button id="add-card-btn" class="add-card-btn admin-only" data-i18n-title="cards.addService" title="Ajouter un service">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="services-grid" id="services-grid">
+                    <!-- Cards loaded dynamically -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p data-i18n="footer">CodeGlyph Digital Solutions</p>
+            <p class="footer-credit" data-i18n="footerCredit">Code par Erick De Smet</p>
+        </footer>
+    </div>
+
+    <!-- Modal for Add/Edit Card -->
+    <div id="card-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title" data-i18n="modals.addService">Ajouter un service</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <form id="card-form">
+                <input type="hidden" id="card-id">
+                <div class="form-group">
+                    <label for="card-title" data-i18n="forms.titleRequired">Titre *</label>
+                    <input type="text" id="card-title" required data-i18n-placeholder="placeholders.serviceName" placeholder="Nom du service">
+                </div>
+                <div class="form-group">
+                    <label for="card-description" data-i18n="forms.description">Description</label>
+                    <input type="text" id="card-description" data-i18n-placeholder="placeholders.shortDescription" placeholder="Description courte">
+                </div>
+                <div class="form-group">
+                    <label for="card-link" data-i18n="forms.linkRequired">Lien *</label>
+                    <input type="url" id="card-link" required data-i18n-placeholder="placeholders.url" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="forms.icon">Icone</label>
+                    <div class="upload-zone" id="upload-zone">
+                        <input type="file" id="icon-file" accept="image/*" style="display: none;">
+                        <div class="upload-preview" id="upload-preview">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span data-i18n="upload.dropHint">Cliquer ou glisser une image</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="card-icon" value="icons/default.svg">
+                </div>
+                <div class="form-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="card-public" checked>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-text" data-i18n="forms.publicAccess">Acces public</span>
+                    </label>
+                    <small class="toggle-hint" data-i18n="forms.publicAccessHint">Si desactive, seul l'admin peut acceder a ce service</small>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="delete-card-btn" class="btn-delete" style="display: none;" data-i18n="buttons.delete">Supprimer</button>
+                    <button type="submit" class="btn-primary" data-i18n="buttons.save">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit SaaS -->
+    <div id="saas-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="saas-modal-title" data-i18n="modals.addSaas">Ajouter un SaaS</h3>
+                <button class="modal-close" id="saas-modal-close">&times;</button>
+            </div>
+            <form id="saas-form">
+                <input type="hidden" id="saas-id">
+                <div class="form-group">
+                    <label for="saas-title" data-i18n="forms.titleOptional">Titre (optionnel)</label>
+                    <input type="text" id="saas-title" data-i18n-placeholder="placeholders.saasName" placeholder="Nom du SaaS">
+                </div>
+                <div class="form-group">
+                    <label for="saas-description" data-i18n="forms.descriptionOptional">Description (optionnel)</label>
+                    <input type="text" id="saas-description" data-i18n-placeholder="placeholders.shortDescription" placeholder="Description courte">
+                </div>
+                <div class="form-group">
+                    <label for="saas-link" data-i18n="forms.linkOptional">Lien (optionnel)</label>
+                    <input type="url" id="saas-link" data-i18n-placeholder="placeholders.url" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="forms.iconRequired">Icone *</label>
+                    <div class="upload-zone" id="saas-upload-zone">
+                        <input type="file" id="saas-icon-file" accept="image/*" style="display: none;">
+                        <div class="upload-preview" id="saas-upload-preview">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span data-i18n="upload.dropHint">Cliquer ou glisser une image</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="saas-icon" value="icons/default.svg">
+                </div>
+                <div class="form-group">
+                    <label for="saas-status" data-i18n="forms.status">Etat d'avancement</label>
+                    <select id="saas-status" class="form-select">
+                        <option value="development" data-i18n="status.development">En developpement</option>
+                        <option value="prerelease" data-i18n="status.prerelease">Pre-Release</option>
+                        <option value="live" data-i18n="status.live">Live</option>
+                    </select>
+                    <small class="toggle-hint" data-i18n="forms.statusHint">Les projets non "Live" sont affiches en mode teaser</small>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="delete-saas-btn" class="btn-delete" style="display: none;" data-i18n="buttons.delete">Supprimer</button>
+                    <button type="submit" class="btn-primary" data-i18n="buttons.save">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Repo Management -->
+    <div id="repo-modal" class="modal">
+        <div class="modal-content modal-wide">
+            <div class="modal-header">
+                <h3 data-i18n="modals.repoManagement">Gestion des depots Git</h3>
+                <button class="modal-close" id="repo-modal-close">&times;</button>
+            </div>
+
+            <div class="repo-management">
+                <!-- Current repos section -->
+                <div class="repo-section">
+                    <h4 data-i18n="repos.configured">Depots configures</h4>
+                    <div id="managed-repos-list" class="repo-list">
+                        <!-- Managed repos loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Discover section -->
+                <div class="repo-section">
+                    <div class="discover-header">
+                        <h4 data-i18n="repos.discover">Decouvrir des depots</h4>
+                        <button id="discover-btn" class="btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <span data-i18n="buttons.scan">Scanner</span>
+                        </button>
+                    </div>
+                    <div id="discovered-repos-list" class="repo-list">
+                        <p class="repo-empty" data-i18n="repos.scanPrompt">Cliquez sur Scanner pour rechercher de nouveaux depots.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Login -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h3 data-i18n="modals.adminLogin">Connexion Admin</h3>
+                <button class="modal-close" id="login-modal-close">&times;</button>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username" data-i18n="forms.username">Utilisateur</label>
+                    <input type="text" id="login-username" required data-i18n-placeholder="placeholders.username" placeholder="Nom d'utilisateur" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password" data-i18n="forms.password">Mot de passe</label>
+                    <input type="password" id="login-password" required data-i18n-placeholder="placeholders.password" placeholder="Mot de passe" autocomplete="current-password">
+                </div>
+                <p id="login-error" class="error-text"></p>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary btn-full" data-i18n="buttons.login">Connexion</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

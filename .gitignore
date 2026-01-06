@@ -1,0 +1,29 @@
+# Environment variables
+.env
+
+# Data files
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Note: data/icons/ contains user-uploaded icons (app/ and saas/)

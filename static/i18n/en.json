@@ -1,0 +1,135 @@
+{
+  "header": {
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeAuto": "Auto",
+    "adminMode": "Admin mode",
+    "adminLogout": "Admin logout"
+  },
+  "sections": {
+    "builder": "My Builder Side",
+    "ops": "My Ops Side",
+    "entrepreneur": "My Founder Side",
+    "selfHosted": "My Self-Hosted Side"
+  },
+  "heatmap": {
+    "loading": "Loading...",
+    "manageRepos": "Manage repositories",
+    "viewDay": "Day",
+    "viewDayTitle": "Day view (admin)",
+    "viewWeek": "Week",
+    "viewWeekTitle": "Week view",
+    "less": "Less",
+    "more": "More"
+  },
+  "stats": {
+    "totalCommits": "Total Commits",
+    "activeDays": "Active Days",
+    "peakHour": "Peak Hour",
+    "currentStreak": "Current Streak",
+    "favoriteDay": "Favorite Day",
+    "avgPerDay": "Avg/Day"
+  },
+  "monitoring": {
+    "cpu": "CPU",
+    "ram": "RAM",
+    "storage": "Storage",
+    "services": "Services",
+    "updated": "Updated:",
+    "dockerServices": "Docker ({docker}) / Services ({services})"
+  },
+  "modals": {
+    "addService": "Add a service",
+    "editService": "Edit service",
+    "addSaas": "Add a SaaS",
+    "editSaas": "Edit SaaS",
+    "adminLogin": "Admin Login",
+    "repoManagement": "Git Repository Management"
+  },
+  "forms": {
+    "title": "Title",
+    "titleRequired": "Title *",
+    "titleOptional": "Title (optional)",
+    "description": "Description",
+    "descriptionOptional": "Description (optional)",
+    "link": "Link",
+    "linkRequired": "Link *",
+    "linkOptional": "Link (optional)",
+    "icon": "Icon",
+    "iconRequired": "Icon *",
+    "publicAccess": "Public access",
+    "publicAccessHint": "If disabled, only admin can access this service",
+    "username": "Username",
+    "password": "Password",
+    "status": "Progress status",
+    "statusHint": "Non-\"Live\" projects are displayed in teaser mode"
+  },
+  "placeholders": {
+    "serviceName": "Service name",
+    "saasName": "SaaS name",
+    "shortDescription": "Short description",
+    "url": "https://...",
+    "username": "Username",
+    "password": "Password",
+    "repoName": "Repository name",
+    "projectUrl": "Project URL (https://...)",
+    "addDescription": "Add a description..."
+  },
+  "upload": {
+    "dropHint": "Click or drag an image",
+    "uploading": "Uploading..."
+  },
+  "buttons": {
+    "save": "Save",
+    "delete": "Delete",
+    "login": "Login",
+    "scan": "Scan",
+    "edit": "Edit",
+    "add": "Add"
+  },
+  "status": {
+    "development": "In development",
+    "prerelease": "Pre-Release",
+    "live": "Live"
+  },
+  "repos": {
+    "configured": "Configured repositories",
+    "discover": "Discover repositories",
+    "scanPrompt": "Click Scan to search for new repositories.",
+    "scanning": "Scanning...",
+    "noNewFound": "No new repositories found",
+    "noConfigured": "No configured repositories",
+    "loadError": "Loading error",
+    "setDefault": "Set as default",
+    "isDefault": "Default repository",
+    "rename": "Rename"
+  },
+  "cards": {
+    "addService": "Add a service",
+    "addSaas": "Add a SaaS",
+    "makePrivate": "Make private",
+    "makePublic": "Make public"
+  },
+  "errors": {
+    "loginFailed": "Invalid credentials",
+    "connectionError": "Connection error",
+    "uploadError": "Upload error",
+    "deleteError": "Deletion error",
+    "addError": "Add error",
+    "scanError": "Scan error",
+    "attemptsLeft": "({count} attempt(s) remaining)"
+  },
+  "confirmations": {
+    "deleteService": "Delete this service?",
+    "deleteSaas": "Delete this SaaS?"
+  },
+  "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  "daysFull": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  "tooltips": {
+    "commits": "{day} {month}: {count} commit(s)",
+    "commitsAt": "{day} {month} at {hour}h: {count} commit(s)"
+  },
+  "footer": "CodeGlyph Digital Solutions",
+  "footerCredit": "Coded by Erick De Smet"
+}
