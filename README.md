@@ -1,10 +1,20 @@
 # CodeGlyph
 
-**Portfolio technique vivant.**
+**Portfolio technique vivant / Living technical portfolio**
 
-Dashboard centralisant mon activité de développement, mes projets et mon infrastructure.
+[![FR](https://img.shields.io/badge/lang-FR-blue)](#-français)
+[![EN](https://img.shields.io/badge/lang-EN-red)](#-english)
 
 **[codeglyph.fr](https://codeglyph.fr)**
+
+---
+
+<details open>
+<summary>🇫🇷 Français</summary>
+
+## Description
+
+Dashboard centralisant mon activité de développement, mes projets et mon infrastructure.
 
 ## Fonctionnalités
 
@@ -114,15 +124,14 @@ Accessible sur `http://localhost:4000`
 
 © 2026 CodeGlyph — Tous droits réservés
 
----
+</details>
 
-# CodeGlyph (English)
+<details>
+<summary>🇬🇧 English</summary>
 
-**Living technical portfolio.**
+## Description
 
 Dashboard centralizing my development activity, projects and infrastructure.
-
-**[codeglyph.fr](https://codeglyph.fr)**
 
 ## Features
 
@@ -231,3 +240,5 @@ Available at `http://localhost:4000`
 ## License
 
 © 2026 CodeGlyph — All rights reserved
+
+</details>
