@@ -9,6 +9,14 @@ let currentHeatmapData = null;
 let currentView = 'week'; // Default to week view (GitHub style)
 export let reposData = {}; // Store description and URL for tooltip
 
+// Helper function to format date in local timezone (avoids toISOString() UTC conversion)
+function formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 // Expose for external access
 export function getCurrentHeatmapData() {
     return currentHeatmapData;
@@ -170,7 +178,7 @@ export function renderHeatmapWeekly(data) {
             const cell = document.createElement('div');
             cell.className = 'cell';
 
-            const dateStr = currentDate.toISOString().split('T')[0];
+            const dateStr = formatLocalDate(currentDate);
             const count = dailyCommits[dateStr] || 0;
             const day = currentDate.getDate();
             const month = currentDate.getMonth();
@@ -262,7 +270,7 @@ export function renderHeatmapDaily(data) {
     let dayIndex = 0;
 
     while (currentDate <= endDate) {
-        const dateStr = currentDate.toISOString().split('T')[0];
+        const dateStr = formatLocalDate(currentDate);
         const day = currentDate.getDate();
         const month = currentDate.getMonth();
 

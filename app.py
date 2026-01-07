@@ -546,7 +546,7 @@ def get_heatmap(repo_id):
             'git', '-C', str(full_path),
             'log', '--all',
             '--format=%ad',
-            '--date=format:%Y-%m-%d %H'
+            '--date=format-local:%Y-%m-%d %H'
         ]
 
         if since_date:
@@ -582,7 +582,7 @@ def get_heatmap(repo_id):
                 'git', '-C', str(full_path),
                 'log', '--all', '--reverse',
                 '--format=%ad',
-                '--date=format:%Y-%m-%d',
+                '--date=format-local:%Y-%m-%d',
             ]
             first_result = subprocess.run(first_cmd, capture_output=True, text=True, timeout=10)
             first_lines = first_result.stdout.strip().split('\n')

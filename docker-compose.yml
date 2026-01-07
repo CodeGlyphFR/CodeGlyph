@@ -18,3 +18,4 @@ services:
     environment:
       - FLASK_ENV=production
       - GIT_REPOS_BASE=/repos
+      - TZ=Europe/Paris
