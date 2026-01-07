@@ -1,11 +1,19 @@
-# CodeGlyph
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="static/icons/logo_dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="static/icons/logo_light.png">
+    <img alt="CodeGlyph" src="static/icons/logo_light.png" width="400">
+  </picture>
+</p>
 
-**Portfolio technique vivant / Living technical portfolio**
+<p align="center">
+  <strong>Portfolio technique vivant / Living technical portfolio</strong>
+</p>
 
-[![FR](https://img.shields.io/badge/lang-FR-blue)](#-français)
-[![EN](https://img.shields.io/badge/lang-EN-red)](#-english)
-
-**[codeglyph.fr](https://codeglyph.fr)**
+<p align="center">
+  <a href="#-français"><img src="https://img.shields.io/badge/lang-FR-blue" alt="FR"></a>
+  <a href="#-english"><img src="https://img.shields.io/badge/lang-EN-red" alt="EN"></a>
+</p>
 
 ---
 
