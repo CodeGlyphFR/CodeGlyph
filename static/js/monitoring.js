@@ -5,6 +5,57 @@ import { isAdmin } from './admin.js';
 
 const MONITOR_REFRESH_INTERVAL = 5000; // 5 seconds
 
+// Custom tooltip for service dots (mobile support)
+let serviceTooltipElement = null;
+
+function createServiceTooltip() {
+    if (serviceTooltipElement) return;
+    serviceTooltipElement = document.createElement('div');
+    serviceTooltipElement.className = 'service-tooltip';
+    document.body.appendChild(serviceTooltipElement);
+}
+
+function showServiceTooltip(dot, text) {
+    if (!text) return;
+    createServiceTooltip();
+
+    serviceTooltipElement.textContent = text;
+    serviceTooltipElement.classList.add('visible');
+
+    const rect = dot.getBoundingClientRect();
+    const tooltipRect = serviceTooltipElement.getBoundingClientRect();
+
+    let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+    let top = rect.top - tooltipRect.height - 8;
+
+    if (left < 8) left = 8;
+    if (left + tooltipRect.width > window.innerWidth - 8) {
+        left = window.innerWidth - tooltipRect.width - 8;
+    }
+    if (top < 8) {
+        top = rect.bottom + 8;
+    }
+
+    serviceTooltipElement.style.left = left + 'px';
+    serviceTooltipElement.style.top = top + 'px';
+}
+
+function hideServiceTooltip() {
+    if (serviceTooltipElement) {
+        serviceTooltipElement.classList.remove('visible');
+    }
+}
+
+// Initialize tooltip listeners
+export function initServiceTooltipListeners() {
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.service-dot')) {
+            hideServiceTooltip();
+        }
+    });
+    document.addEventListener('scroll', hideServiceTooltip, true);
+}
+
 export async function loadSystemStatus() {
     try {
         const response = await fetch(`${API_BASE}/system/status`);
@@ -138,9 +189,22 @@ export function renderServiceMatrix(services) {
 
         const type = index < FIXED_SERVICES_COUNT ? 'is-service' : 'is-docker';
         const status = isRunning ? 'running' : 'stopped';
-        const tooltip = isAdmin && name ? ` title="${name}"` : '';
-        return `<div class="service-dot ${type} ${status}"${tooltip}></div>`;
+        const dataTooltip = isAdmin && name ? ` data-tooltip="${name}"` : '';
+        return `<div class="service-dot ${type} ${status}"${dataTooltip}></div>`;
     }).join('');
+
+    // Attach tooltip events to dots with data-tooltip
+    if (isAdmin) {
+        container.querySelectorAll('.service-dot[data-tooltip]').forEach(dot => {
+            const tooltipText = dot.dataset.tooltip;
+            dot.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showServiceTooltip(dot, tooltipText);
+            });
+            dot.addEventListener('mouseenter', () => showServiceTooltip(dot, tooltipText));
+            dot.addEventListener('mouseleave', hideServiceTooltip);
+        });
+    }
 
     // Calculer et appliquer la disposition optimale au prochain frame
     requestAnimationFrame(() => {

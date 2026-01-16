@@ -6,7 +6,7 @@ import { loadCards, initCardListeners } from './cards.js';
 import { loadSaas, initSaasListeners } from './saas.js';
 import { loadRepos, initHeatmapListeners, initDragScroll, initTooltipListeners, renderCurrentView, getCurrentHeatmapData } from './heatmap.js';
 import { initRepoListeners, updateInfoButton, loadManagedRepos } from './repos.js';
-import { startMonitoring } from './monitoring.js';
+import { startMonitoring, initServiceTooltipListeners } from './monitoring.js';
 
 // Initialize theme immediately (before DOMContentLoaded)
 initTheme();
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initHeatmapListeners();
     initDragScroll();
     initTooltipListeners();
+    initServiceTooltipListeners();
     initRepoListeners();
 
     // Load initial data

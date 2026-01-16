@@ -665,9 +665,33 @@ footer {
 
 /* Make cells with commits look clickable on touch devices */
 @media (hover: none) and (pointer: coarse) {
-    .cell[data-tooltip] {
+    .cell[data-tooltip],
+    .service-dot[data-tooltip] {
         cursor: pointer;
     }
+}
+
+/* Custom tooltip for service dots (mobile support) */
+.service-tooltip {
+    position: fixed;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 1000;
+    white-space: nowrap;
+}
+
+.service-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .heatmap-legend {
