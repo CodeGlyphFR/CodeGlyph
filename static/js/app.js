@@ -4,7 +4,7 @@ import { initTheme } from './theme.js';
 import { checkAdminSession, initAdminListeners, updateAdminUI } from './admin.js';
 import { loadCards, initCardListeners } from './cards.js';
 import { loadSaas, initSaasListeners } from './saas.js';
-import { loadRepos, initHeatmapListeners, initDragScroll, renderCurrentView, getCurrentHeatmapData } from './heatmap.js';
+import { loadRepos, initHeatmapListeners, initDragScroll, initTooltipListeners, renderCurrentView, getCurrentHeatmapData } from './heatmap.js';
 import { initRepoListeners, updateInfoButton, loadManagedRepos } from './repos.js';
 import { startMonitoring } from './monitoring.js';
 
@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initSaasListeners();
     initHeatmapListeners();
     initDragScroll();
+    initTooltipListeners();
     initRepoListeners();
 
     // Load initial data

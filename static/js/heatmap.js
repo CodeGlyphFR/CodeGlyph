@@ -199,9 +199,16 @@ export function renderHeatmapWeekly(data) {
             }
 
             cell.classList.add(`heat-${level}`);
-            // Only show tooltip if there are commits
+            // Store tooltip data for both hover and touch
             if (count > 0) {
-                cell.title = `${day} ${getMonthNames()[month]}: ${count} commit${count !== 1 ? 's' : ''}`;
+                const tooltipText = `${day} ${getMonthNames()[month]}: ${count} commit${count !== 1 ? 's' : ''}`;
+                cell.dataset.tooltip = tooltipText;
+                cell.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showTooltip(cell, tooltipText, e);
+                });
+                cell.addEventListener('mouseenter', () => showTooltip(cell, tooltipText));
+                cell.addEventListener('mouseleave', hideTooltip);
             }
             weekColumn.appendChild(cell);
 
@@ -307,9 +314,16 @@ export function renderHeatmapDaily(data) {
             if (count >= 6) level = 4;
 
             cell.classList.add(`heat-${level}`);
-            // Only show tooltip if there are commits
+            // Store tooltip data for both hover and touch
             if (count > 0) {
-                cell.title = `${day} ${getMonthNames()[month]} a ${hourStr}h: ${count} commit${count > 1 ? 's' : ''}`;
+                const tooltipText = `${day} ${getMonthNames()[month]} a ${hourStr}h: ${count} commit${count > 1 ? 's' : ''}`;
+                cell.dataset.tooltip = tooltipText;
+                cell.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showTooltip(cell, tooltipText, e);
+                });
+                cell.addEventListener('mouseenter', () => showTooltip(cell, tooltipText));
+                cell.addEventListener('mouseleave', hideTooltip);
             }
             dayColumn.appendChild(cell);
         }
@@ -406,6 +420,61 @@ export function initHeatmapListeners() {
             }
         });
     });
+}
+
+// Custom tooltip for mobile support
+let tooltipElement = null;
+
+function createTooltip() {
+    if (tooltipElement) return;
+    tooltipElement = document.createElement('div');
+    tooltipElement.className = 'heatmap-tooltip';
+    document.body.appendChild(tooltipElement);
+}
+
+function showTooltip(cell, text, event) {
+    if (!text) return;
+    createTooltip();
+
+    tooltipElement.textContent = text;
+    tooltipElement.classList.add('visible');
+
+    const rect = cell.getBoundingClientRect();
+    const tooltipRect = tooltipElement.getBoundingClientRect();
+
+    // Position above the cell
+    let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+    let top = rect.top - tooltipRect.height - 8;
+
+    // Keep within viewport
+    if (left < 8) left = 8;
+    if (left + tooltipRect.width > window.innerWidth - 8) {
+        left = window.innerWidth - tooltipRect.width - 8;
+    }
+    if (top < 8) {
+        // Show below if not enough space above
+        top = rect.bottom + 8;
+    }
+
+    tooltipElement.style.left = left + 'px';
+    tooltipElement.style.top = top + 'px';
+}
+
+function hideTooltip() {
+    if (tooltipElement) {
+        tooltipElement.classList.remove('visible');
+    }
+}
+
+export function initTooltipListeners() {
+    // Hide tooltip when clicking outside or scrolling
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.cell')) {
+            hideTooltip();
+        }
+    });
+
+    document.addEventListener('scroll', hideTooltip, true);
 }
 
 // Drag scroll state
