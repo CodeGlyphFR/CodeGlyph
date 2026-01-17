@@ -775,6 +775,7 @@ footer {
     border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 3px;
+    margin-left: auto;
     gap: 2px;
 }
 
