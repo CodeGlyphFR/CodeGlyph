@@ -8,6 +8,7 @@ import { isAdmin, showLoginModal, setDayViewSwitchCallback, setPendingSwitchToDa
 let currentHeatmapData = null;
 let currentView = 'week'; // Default to week view (GitHub style)
 export let reposData = {}; // Store description and URL for tooltip
+let globalHeatmapLoaded = false; // Track if global heatmap was loaded for non-admin
 
 // Helper function to format date in local timezone (avoids toISOString() UTC conversion)
 function formatLocalDate(date) {
@@ -26,7 +27,39 @@ export function setCurrentView(view) {
     currentView = view;
 }
 
+// Load global heatmap (for non-admin users)
+export async function loadGlobalHeatmap() {
+    const container = document.getElementById('heatmap-container');
+    const loading = document.getElementById('heatmap-loading');
+    const viewToggle = document.getElementById('view-toggle');
+
+    if (loading) loading.style.display = 'block';
+    if (container) container.style.display = 'none';
+
+    try {
+        const response = await fetch(`${API_BASE}/git/heatmap/global`);
+        currentHeatmapData = await response.json();
+        renderCurrentView();
+        if (container) container.style.display = 'block';
+        if (viewToggle) viewToggle.style.display = 'flex';
+        globalHeatmapLoaded = true;
+    } catch (error) {
+        console.error('Error loading global heatmap:', error);
+    } finally {
+        if (loading) loading.style.display = 'none';
+    }
+}
+
 export async function loadRepos() {
+    // For non-admin users, just load the global heatmap
+    if (!isAdmin) {
+        if (!globalHeatmapLoaded) {
+            await loadGlobalHeatmap();
+        }
+        return;
+    }
+
+    // Admin mode: load repos into dropdown with "Global" option
     try {
         const response = await fetch(`${API_BASE}/git/repos`);
         const data = await response.json();
@@ -35,6 +68,12 @@ export async function loadRepos() {
 
         // Clear and repopulate
         select.innerHTML = '';
+
+        // Add "Global" option first
+        const globalOption = document.createElement('option');
+        globalOption.value = 'global';
+        globalOption.textContent = 'Global (tous les repos)';
+        select.appendChild(globalOption);
 
         // Store descriptions and URLs for tooltip
         reposData = {};
@@ -50,13 +89,10 @@ export async function loadRepos() {
             select.appendChild(option);
         });
 
-        // Always select a repo: defaultRepo or first one
-        if (data.repos.length > 0) {
-            const selectedId = data.defaultRepo || data.repos[0].id;
-            select.value = selectedId;
-            // Trigger change event to load heatmap
-            select.dispatchEvent(new Event('change'));
-        }
+        // Default to "Global" option
+        select.value = 'global';
+        // Trigger change event to load heatmap
+        select.dispatchEvent(new Event('change'));
     } catch (error) {
         console.error('Error loading repos:', error);
     }
@@ -364,6 +400,18 @@ export function initHeatmapListeners() {
         }
     });
 
+    // Listen for admin state changes to reload repos/heatmap
+    window.addEventListener('adminStateChanged', () => {
+        if (isAdmin) {
+            // Admin logged in: load repos with dropdown
+            loadRepos();
+        } else {
+            // Admin logged out: reload global heatmap
+            globalHeatmapLoaded = false;
+            loadGlobalHeatmap();
+        }
+    });
+
     const repoSelect = document.getElementById('repo-select');
     if (repoSelect) {
         repoSelect.addEventListener('change', async (e) => {
@@ -373,8 +421,13 @@ export function initHeatmapListeners() {
             const viewToggle = document.getElementById('view-toggle');
 
             // Update info button for current repo (imported from repos.js later, use window)
+            // Hide info button for global view
             if (window.updateInfoButton) {
-                window.updateInfoButton(repoId);
+                if (repoId === 'global') {
+                    document.getElementById('repo-info-btn').style.display = 'none';
+                } else {
+                    window.updateInfoButton(repoId);
+                }
             }
 
             if (!repoId) {
@@ -387,7 +440,11 @@ export function initHeatmapListeners() {
             container.style.display = 'none';
 
             try {
-                const response = await fetch(`${API_BASE}/git/heatmap/${repoId}`);
+                // Use global endpoint for "global" option
+                const endpoint = repoId === 'global'
+                    ? `${API_BASE}/git/heatmap/global`
+                    : `${API_BASE}/git/heatmap/${repoId}`;
+                const response = await fetch(endpoint);
                 currentHeatmapData = await response.json();
                 renderCurrentView();
                 container.style.display = 'block';

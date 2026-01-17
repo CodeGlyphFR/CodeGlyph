@@ -3,6 +3,7 @@
 import { API_BASE } from './config.js';
 import { escapeHtml } from './utils.js';
 import { reposData } from './heatmap.js';
+import { isAdmin } from './admin.js';
 
 // DOM elements (initialized in initRepoListeners)
 let repoModal, managedReposList, discoveredReposList;
@@ -319,6 +320,12 @@ export async function saveRepoUrl(repoId, url) {
 export function updateInfoButton(repoId) {
     const infoBtn = document.getElementById('repo-info-btn');
     if (!infoBtn) return;
+
+    // Only show info button in admin mode
+    if (!isAdmin) {
+        infoBtn.style.display = 'none';
+        return;
+    }
 
     const tooltip = infoBtn.querySelector('.info-tooltip');
     const data = reposData[repoId] || {};

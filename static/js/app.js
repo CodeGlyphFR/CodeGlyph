@@ -1,7 +1,7 @@
 // Main application entry point
 
 import { initTheme } from './theme.js';
-import { checkAdminSession, initAdminListeners, updateAdminUI } from './admin.js';
+import { checkAdminSession, initAdminListeners, updateAdminUI, isAdmin } from './admin.js';
 import { loadCards, initCardListeners } from './cards.js';
 import { loadSaas, initSaasListeners } from './saas.js';
 import { loadRepos, initHeatmapListeners, initDragScroll, initTooltipListeners, renderCurrentView, getCurrentHeatmapData } from './heatmap.js';
@@ -45,10 +45,12 @@ window.addEventListener('languageChanged', () => {
         renderCurrentView();
     }
     updateAdminUI();
-    // Update repo info tooltip with localized description
-    const select = document.getElementById('repo-select');
-    if (select && select.value) {
-        updateInfoButton(select.value);
+    // Update repo info tooltip with localized description (admin only)
+    if (isAdmin) {
+        const select = document.getElementById('repo-select');
+        if (select && select.value) {
+            updateInfoButton(select.value);
+        }
     }
     // Reload repo modal if open
     const repoModal = document.getElementById('repo-modal');

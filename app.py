@@ -510,6 +510,175 @@ def update_repo(repo_id):
     save_repos(data)
     return jsonify(repo)
 
+
+@app.route('/api/git/heatmap/global', methods=['GET'])
+def get_global_heatmap():
+    """
+    Get aggregated commit heatmap data for all managed repositories.
+    Returns commits grouped by date and hour (0-23).
+
+    Query params:
+    - since: Start date in YYYY-MM-DD format (optional, defaults to earliest first commit)
+    """
+    data = load_repos()
+    repos = data.get('repos', [])
+
+    if not repos:
+        return jsonify({'error': 'No repositories configured'}), 404
+
+    since_date = request.args.get('since', None)
+
+    # Check cache first (thread-safe)
+    cache_key = f"global:{since_date or 'all'}"
+    with heatmap_cache_lock:
+        if cache_key in heatmap_cache:
+            return jsonify(heatmap_cache[cache_key])
+
+    try:
+        # Aggregate commits from all repos
+        all_commits = {}
+        earliest_date = None
+        repo_count = 0
+
+        for repo in repos:
+            repo_path = repo['path']
+            full_path = Path(GIT_REPOS_BASE) / repo_path
+
+            if not (full_path / '.git').exists():
+                continue
+
+            repo_count += 1
+
+            # Build git log command
+            git_cmd = [
+                'git', '-C', str(full_path),
+                'log', '--all',
+                '--format=%ad',
+                '--date=format-local:%Y-%m-%d %H'
+            ]
+
+            if since_date:
+                git_cmd.append(f'--since={since_date}')
+
+            result = subprocess.run(
+                git_cmd,
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+
+            if result.returncode != 0:
+                continue
+
+            # Parse commits
+            lines = result.stdout.strip().split('\n')
+            for line in lines:
+                if not line:
+                    continue
+                parts = line.split(' ')
+                if len(parts) >= 2:
+                    date = parts[0]
+                    hour = parts[1]
+                    key = f"{date}-{hour}"
+                    all_commits[key] = all_commits.get(key, 0) + 1
+
+            # Get first commit date for this repo
+            if not since_date:
+                first_cmd = [
+                    'git', '-C', str(full_path),
+                    'log', '--all', '--reverse',
+                    '--format=%ad',
+                    '--date=format-local:%Y-%m-%d',
+                ]
+                first_result = subprocess.run(first_cmd, capture_output=True, text=True, timeout=10)
+                first_lines = first_result.stdout.strip().split('\n')
+                if first_lines and first_lines[0]:
+                    repo_first_date = first_lines[0]
+                    if earliest_date is None or repo_first_date < earliest_date:
+                        earliest_date = repo_first_date
+
+        if repo_count == 0:
+            return jsonify({'error': 'No valid repositories found'}), 404
+
+        if not since_date:
+            since_date = earliest_date or datetime.now().strftime('%Y-%m-%d')
+
+        # Calculate statistics
+        total_commits = sum(all_commits.values())
+        unique_dates = set(k.rsplit('-', 1)[0] for k in all_commits.keys()) if all_commits else set()
+        unique_days = len(unique_dates)
+
+        # Find peak hour
+        hour_counts = {}
+        for key, count in all_commits.items():
+            hour = key.split('-')[-1]
+            hour_counts[hour] = hour_counts.get(hour, 0) + count
+        peak_hour = max(hour_counts, key=hour_counts.get) if hour_counts else '12'
+
+        # Calculate current streak (consecutive days up to today)
+        current_streak = 0
+        if unique_dates:
+            today = datetime.now().date()
+            check_date = today
+            sorted_dates = sorted(unique_dates, reverse=True)
+            date_set = set(sorted_dates)
+
+            # Check if today or yesterday has commits (streak can include today)
+            while check_date.isoformat() in date_set:
+                current_streak += 1
+                check_date = check_date - timedelta(days=1)
+
+            # If no commits today, check from yesterday
+            if current_streak == 0:
+                check_date = today - timedelta(days=1)
+                while check_date.isoformat() in date_set:
+                    current_streak += 1
+                    check_date = check_date - timedelta(days=1)
+
+        # Find busiest day of week
+        day_names_fr = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+        weekday_counts = {i: 0 for i in range(7)}
+        for key, count in all_commits.items():
+            date_str = key.rsplit('-', 1)[0]
+            try:
+                date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+                weekday_counts[date_obj.weekday()] += count
+            except ValueError:
+                pass
+        busiest_weekday = max(weekday_counts, key=weekday_counts.get) if any(weekday_counts.values()) else 0
+        busiest_day = day_names_fr[busiest_weekday]
+
+        # Average commits per active day
+        avg_commits = round(total_commits / unique_days, 1) if unique_days > 0 else 0
+
+        # Build result
+        result = {
+            'repo': 'global',
+            'repoName': f'Global ({repo_count} repos)',
+            'sinceDate': since_date,
+            'commits': all_commits,
+            'stats': {
+                'totalCommits': total_commits,
+                'uniqueDays': unique_days,
+                'peakHour': int(peak_hour),
+                'currentStreak': current_streak,
+                'busiestDay': busiest_day,
+                'avgCommitsPerDay': avg_commits
+            }
+        }
+
+        # Store in cache before returning
+        with heatmap_cache_lock:
+            heatmap_cache[cache_key] = result
+
+        return jsonify(result)
+
+    except subprocess.TimeoutExpired:
+        return jsonify({'error': 'Request timeout'}), 504
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/git/heatmap/<repo_id>', methods=['GET'])
 def get_heatmap(repo_id):
     """
@@ -662,6 +831,7 @@ def get_heatmap(repo_id):
         return jsonify({'error': 'Request timeout'}), 504
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 # ============================================================================
 # SERVICE CARDS CRUD API
