@@ -522,6 +522,7 @@ footer {
     gap: 3px;
     min-width: 40px;
     padding-right: 5px;
+    padding-top: 35px; /* 5px grid-container + 25px months-row + 5px days-row */
 }
 
 .heatmap-wrapper.view-week .days-row {
@@ -555,6 +556,10 @@ footer {
     gap: 2px;
     padding-top: 25px;
     padding-right: 8px;
+    position: sticky;
+    left: 0;
+    z-index: 10;
+    background: var(--card-bg);
 }
 
 .hour-label {
